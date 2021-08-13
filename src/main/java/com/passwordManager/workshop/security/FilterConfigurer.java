@@ -3,7 +3,6 @@ package com.passwordManager.workshop.security;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public class FilterConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
@@ -15,8 +14,8 @@ public class FilterConfigurer extends SecurityConfigurerAdapter<DefaultSecurityF
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		JwtFilter jwtFilter = new JwtFilter(jwtprov);
-		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+		JwtFilter jwtFilter = new JwtFilter(jwtprov, null);
+		http.addFilterBefore(jwtFilter,null);
 	}
 	
 	
