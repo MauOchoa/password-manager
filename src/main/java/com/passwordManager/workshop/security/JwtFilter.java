@@ -28,7 +28,7 @@ public class JwtFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader("Authorization").substring(7);
 		String user = jwtprov.validateToken(token);
 		if (user != null) {
-			System.out.println("User not null: " + user);
+			//System.out.println("User not null: " + user);
 			Authentication auth = new UsernamePasswordAuthenticationToken(user,new ArrayList<>());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
