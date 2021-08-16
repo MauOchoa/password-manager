@@ -19,7 +19,7 @@ public class JwtTokenProvider {
 			return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
 		}
 		catch(Exception e) {
-			return null;
+			return e.toString();
 		}
 		
 		
