@@ -1,6 +1,8 @@
 package com.passwordManager.workshop.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +32,8 @@ public class JwtFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader("Authorization").substring(7);
 		String user = jwtprov.validateToken(token);
 		if (user != null) {
-			Authentication auth = new UsernamePasswordAuthenticationToken(user,null);
+			System.out.println("User not null: " + user);
+			Authentication auth = new UsernamePasswordAuthenticationToken(user,new ArrayList<>());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 		filterChain.doFilter(request, response);

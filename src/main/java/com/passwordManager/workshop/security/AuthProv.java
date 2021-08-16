@@ -1,8 +1,11 @@
 package com.passwordManager.workshop.security;
 
+import java.util.ArrayList;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class AuthProv extends AbstractUserDetailsAuthenticationProvider {
@@ -18,7 +21,7 @@ public class AuthProv extends AbstractUserDetailsAuthenticationProvider {
 	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
 			throws AuthenticationException {
 		// TODO Auto-generated method stub
-		return null;
+		return new User(username, "", new ArrayList<>());
 	}
 
 }

@@ -20,25 +20,22 @@ import com.passwordManager.workshop.service.CredentialsService;
 @RestController
 public class CredentialsController {
 	
-	
-	@Autowired
-	JwtTokenProvider jwt;
-	
 	@Autowired
 	CredentialsService credService;
 	
-	
-	@GetMapping(value="/get/{domain}")
-	public List<Credentials> getPassword(@PathVariable("domain")String domain, HttpServletRequest request) {
-		String user = jwt.extractUsername(request);
-		return credService.getCredentials(domain, user);	 
-	}
+	@Autowired
+	JwtTokenProvider jwt;
 	
 	@GetMapping(value="/get/hello")
 	public String helloWorld(){
 		return "Hello World!";
 	}
 	
+	@GetMapping(value="/get/{domain}")
+	public List<Credentials> getPassword(@PathVariable("domain")String domain, HttpServletRequest request) {
+		String user = jwt.extractUsername(request);
+		return credService.getCredentials(domain, user);	 
+	}
 	
 	@PostMapping(value="/post")
 	public String postPassword() {

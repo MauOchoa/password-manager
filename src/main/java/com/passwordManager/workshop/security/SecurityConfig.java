@@ -23,9 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable();
+		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.authorizeRequests().antMatchers("/get/**").authenticated().and()
 		.addFilter(new JwtFilter(jwtProv, authenticationManager()));
-		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
 		
 		
 	}
