@@ -9,6 +9,7 @@ import com.passwordManager.workshop.models.LoginDetails;
 import com.passwordManager.workshop.models.Tokens;
 import com.passwordManager.workshop.security.JwtTokenProvider;
 import com.passwordManager.workshop.service.LoginService;
+import com.passwordManager.workshop.service.UserDataService;
 
 @Service
 public class LoginServiceImpl implements LoginService{
@@ -18,13 +19,22 @@ public class LoginServiceImpl implements LoginService{
 	@Autowired
 	JwtTokenProvider jwtTokenProvider;
 	
+	@Autowired
+	UserDataService userDataService;
+	
 	@Override
-    public String login(LoginDetails details) throws Exception {
-		String dao= daoData(details.getPassword());
-		if (!passwordEncoder.matches(details.getPassword(), dao)){
+    public Tokens login(LoginDetails details) throws Exception {
+		
+		String dbPassword = userDataService.readByUsername(details.getUser()).getPassword();
+		
+		if (!passwordEncoder.matches(details.getPassword(), dbPassword)){
 	           throw new Exception("Login failed");
 	    }
-		return jwtTokenProvider.createToken(details.getUser());
+		
+		Tokens tokens = new Tokens();
+		tokens.setAccesToken(jwtTokenProvider.createToken(details.getUser()));
+		tokens.setRefreshToken(jwtTokenProvider.createRefreshToken(details.getUser()));
+		return tokens;
 		
        /*System.out.println(details.getPassword()+ " before encode");
        String dao= daoData(details.getPassword());
