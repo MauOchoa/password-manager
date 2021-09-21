@@ -1,26 +1,31 @@
 package com.passwordManager.workshop.security;
 
+import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenProvider {
-	
+							
 	private String SECRET_KEY = "Maurapids1234";
 	
 	//@Value("${}")
 	private long expTime = 900000;
 	
+	private long expRefreshTime = 900000000;
+	
 	public String extractUsername(HttpServletRequest httpRequest) {
 		String token = httpRequest.getHeader("Authorization").substring(7);
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject(); // returns User from headers
+	}
+	
+	public String exctractId(HttpServletRequest httpRequest) {
+        String token = httpRequest.getHeader("Authorization").substring(7);
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getId();
 	}
 	
 	public Boolean validateToken(String token){
@@ -28,7 +33,7 @@ public class JwtTokenProvider {
 			Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
 		}
 		catch(Exception e) {
-			e.toString();
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -43,12 +48,14 @@ public class JwtTokenProvider {
 		.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 	
-	
-	/*public List<String> getScopes(String Token){
-		try {
-			return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(Token).getBody().get("scopes", List.class);
-		}
-		
-	}*/
+	public String createRefreshToken(String username){
+		Claims claims= Jwts.claims().setSubject(username); // claims.put ()
+        claims.put("Scopes", Arrays.asList(new String [] {"ROLE_REFRESH"}));
+        Date now= new Date();
+
+        return Jwts.builder().setIssuer("ksquare.com").setClaims(claims).setIssuedAt(now)
+        .setExpiration(new Date (now.getTime() + expRefreshTime))
+        .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+	}
 	
 }
