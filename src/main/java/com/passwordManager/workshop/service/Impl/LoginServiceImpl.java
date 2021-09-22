@@ -25,7 +25,7 @@ public class LoginServiceImpl implements LoginService{
 	@Override
     public Tokens login(LoginDetails details) throws Exception {
 		
-		String dbPassword = userDataService.readByUsername(details.getUser()).getPassword();
+		String dbPassword = userDataService.readUserByUserName(details.getUser()).getPassword();
 		
 		if (!passwordEncoder.matches(details.getPassword(), dbPassword)){
 	           throw new Exception("Login failed");

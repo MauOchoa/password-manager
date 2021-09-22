@@ -23,7 +23,7 @@ public class JwtTokenProvider {
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject(); // returns User from headers
 	}
 	
-	public String exctractId(HttpServletRequest httpRequest) {
+	public String extractId(HttpServletRequest httpRequest) {
         String token = httpRequest.getHeader("Authorization").substring(7);
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getId();
 	}
