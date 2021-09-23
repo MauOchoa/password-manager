@@ -23,7 +23,7 @@ public class UserData {
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@ApiModelProperty(hidden = true) 
-	@Column(name = "id_users")
+	@Column(name = "id_user")
 	private int id;
 
 	@ApiModelProperty(position = 1, required = true, example = "Mau")
@@ -38,7 +38,7 @@ public class UserData {
 	
 	//One to many relationship idUser is field in Credentials table
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="idUser")
+	@JoinColumn(name="id_user")
 	private List<Credentials> credentials;
     
 }
