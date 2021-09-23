@@ -13,6 +13,11 @@ public class CrendtialsServiceImpl implements CredentialsService {
 	@Autowired
 	CredentialsRepository credRepository;
 	
+	@Override
+	public List<Credentials> getAllCredentials() {
+		return credRepository.findAll();
+	}
+	
 	public List<Credentials> getCredentials(String domain, String user){
 		return credRepository.findByDomainAndUser(domain, user);
 	}

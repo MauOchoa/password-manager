@@ -6,6 +6,7 @@ import com.passwordManager.workshop.models.Credentials;
 
 public interface CredentialsService {
 
+	List <Credentials> getAllCredentials();
 	List<Credentials> getCredentials (String domain, String user);
 	
 }

@@ -15,6 +15,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	JwtTokenProvider jwtProv;
 	
+	 private static final String[] AUTH_WHITELIST = {
+		        // -- Swagger UI v2
+		        "/v2/api-docs",
+		        "/swagger-resources",
+		        "/swagger-resources/**",
+		        "/configuration/ui",
+		        "/configuration/security",
+		        "/swagger-ui.html",
+		        "/webjars/**",
+		        // -- Swagger UI v3 (OpenAPI)
+		        "/v3/api-docs/**",
+		        "/swagger-ui/**"
+		        // other public endpoints of your API may be appended to this array
+	 };
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
 		auth.authenticationProvider(new AuthProv());
@@ -24,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable();
 		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		httpSecurity.authorizeRequests().antMatchers("/login").permitAll();
+		httpSecurity.authorizeRequests().antMatchers("/login").permitAll().and()
+		.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
 		httpSecurity.authorizeRequests().anyRequest().authenticated().and()
 		.addFilter(new JwtFilter(jwtProv, authenticationManager()));
 		
